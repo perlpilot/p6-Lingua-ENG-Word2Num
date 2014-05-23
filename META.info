@@ -1,0 +1,8 @@
+{
+    "name"          : "Lingua::ENG::Word2Num",
+    "version"       : "0.01",
+    "description"   : "English text to number converter",
+    "depends"       : [ ],
+    "source-url"    : "git://github.com/perlpilot/p6-Lingua-ENG-Word2Num.git",
+    "author"        : "Jonathan Scott Duff"
+}

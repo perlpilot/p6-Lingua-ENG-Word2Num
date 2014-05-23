@@ -1,0 +1,13 @@
+# words | number | description
+zero|0|zero is recognized correctly
+one|1|one is recognized correctly
+two|2|two is recognized correctly
+twenty|20|twenty
+thirty seven|37|compound number
+fifty-three|53|compound number with hyphen
+six hundred|600
+five hundred eighty three|583
+seven hundred twenty six|726
+three hundred thousand|300000
+two hundred forty seven thousand nine hundred fourteen|247914
+seven million|7000000
