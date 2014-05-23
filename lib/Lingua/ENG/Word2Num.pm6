@@ -115,11 +115,10 @@ sub w2n ($words) is export {
  
     use Lingua::ENG::Word2Num;
    
-    # ... some code to obtain numbers
-
+    my @wordy-numbers = "numbers.dat".IO.lines;
     for @wordy-numbers -> $wn {
         my $num = w2n( $wn );
-        say "$wn == " ~ defined($num) ?? $num !! "(unknown)";
+        say "$wn == ", defined($num) ?? $num !! "(unknown)";
     }
 
        
