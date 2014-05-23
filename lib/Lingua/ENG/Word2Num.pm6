@@ -33,26 +33,13 @@ grammar Lingua::ENG::Word2Num::Parser {
     }
 
     token thousands {
-        | <t=.hundreds> \h+ 'thousand' \h+ <hundreds>       { make +$<t>.made * 1000 + +$<hundreds>.made }
-        | <t=.hundreds> \h+ 'thousand' \h+ <tens>           { make +$<t>.made * 1000 + +$<tens>.made }
-        | <t=.hundreds> \h+ 'thousand' \h+ <number>         { make +$<t>.made * 1000 + +$<number>.made }
-        | <t=.hundreds> \h+ 'thousand'                      { make +$<t>.made * 1000 }
- 
-        | <t=.tens> \h+ 'thousand' \h+ <hundreds>           { make +$<t>.made * 1000 + +$<hundreds>.made }
-        | <t=.tens> \h+ 'thousand' \h+ <tens>               { make +$<t>.made * 1000 + +$<tens>.made }
-        | <t=.tens> \h+ 'thousand' \h+ <number>             { make +$<t>.made * 1000 + +$<number>.made }
-        | <t=.tens> \h+ 'thousand'                          { make +$<t>.made * 1000 }
- 
-        | <t=.number> \h+ 'thousand' \h+ <hundreds>         { make +$<t>.made * 1000 + +$<hundreds>.made }
-        | <t=.number> \h+ 'thousand' \h+ <tens>             { make +$<t>.made * 1000 + +$<tens>.made }
-        | <t=.number> \h+ 'thousand' \h+ <number>           { make +$<t>.made * 1000 + +$<number>.made }
-        | <t=.number> \h+ 'thousand'                        { make +$<t>.made * 1000 }
+        | [ <t=.hundreds> | <t=.tens> | <t=.number> ] \h+ 'thousand' [ \h+ [ <o=.hundreds> | <o=.tens> | <o=.number> | <?> ] ]?
+            { make +$<t>.made * 1000 + +($<o>.?made // 0) }
     }
 
     token hundreds {
-        | <n=.number> \h+ 'hundred' \h+ <tens>              { make +$<n>.made * 100 + +$<tens>.made }
-        | <n=.number> \h+ 'hundred' \h+ <number>            { make +$<n>.made * 100 + +$<number>.made }
-        | <n=.number> \h+ 'hundred'                         { make +$<n>.made * 100 }
+        | <n=.number> \h+ 'hundred' [ \h+ [ <o=.tens> | <o=.number> | <?> ]  ]?
+                { make +$<n>.made * 100 + +($<o>.?made // 0) }
     }
 
     token tens {

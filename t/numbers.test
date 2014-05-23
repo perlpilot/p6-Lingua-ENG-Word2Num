@@ -8,6 +8,18 @@ fifty-three|53|compound number with hyphen
 six hundred|600
 five hundred eighty three|583
 seven hundred twenty six|726
+eight thousand|8000
+fifteen thousand|15000
+sixty thousand|60000
+thirty five thousand|35000
+seventy nine thousand|79000
 three hundred thousand|300000
+two hundred one thousand|201000
+six hundred seventy one thousand|671000
 two hundred forty seven thousand nine hundred fourteen|247914
 seven million|7000000
+five million nine hundred thousand|5900000
+four million eight hundred eighty thousand|4880000
+one million six hundred fifty two thousand forty three|1652043
+one million six hundred fifty-two thousand forty three|1652043|with middle hyphen
+one million six hundred fifty-two thousand forty-three|1652043|with middle and end hyphens
