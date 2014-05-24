@@ -4,6 +4,7 @@ use v6;
 grammar Lingua::ENG::Word2Num::Parser {
 
     token TOP {
+        | <billions>        { make +$<billions>.made }
         | <millions>        { make +$<millions>.made }
         | <thousands>       { make +$<thousands>.made }
         | <hundreds>        { make +$<hundreds>.made }
@@ -12,40 +13,40 @@ grammar Lingua::ENG::Word2Num::Parser {
         | 'zero'            { make 0 }
     }
 
+    token billions {
+        [ <b=.millions> | <b=.hundreds> | <b=.tens> | <b=.number> ] \h+ 'billion' 
+        [
+            \h+ [ <o=.millions> | <o=.thousands> | <o=.hundreds> | <o=.tens> | <o=.number> ] 
+        ]?
+        { make +$<b>.made * 1_000_000_000 + +($<o>.?made // 0); }
+    }
+
     token millions {
-        | <m=.hundreds> \h+ 'million' \h+ <thousands>       { make +$<m>.made * 1_000_000 + +$<thousands>.made; }
-        | <m=.hundreds> \h+ 'million' \h+ <hundreds>        { make +$<m>.made * 1_000_000 + +$<hundreds>.made; }
-        | <m=.hundreds> \h+ 'million' \h+ <tens>            { make +$<m>.made * 1_000_000 + +$<tens>.made; }
-        | <m=.hundreds> \h+ 'million' \h+ <number>          { make +$<m>.made * 1_000_000 + +$<number>.made; }
-        | <m=.hundreds> \h+ 'million'                       { make +$<m>.made * 1_000_000 }
-
-        | <m=.tens> \h+ 'million' \h+ <thousands>           { make +$<m>.made * 1_000_000 + +$<thousands>.made; }
-        | <m=.tens> \h+ 'million' \h+ <hundreds>            { make +$<m>.made * 1_000_000 + +$<hundreds>.made; }
-        | <m=.tens> \h+ 'million' \h+ <tens>                { make +$<m>.made * 1_000_000 + +$<tens>.made; }
-        | <m=.tens> \h+ 'million' \h+ <number>              { make +$<m>.made * 1_000_000 + +$<number>.made; }
-        | <m=.tens> \h+ 'million'                           { make +$<m>.made * 1_000_000; }
-
-        | <m=.number> \h+ 'million' \h+ <thousands>         { make +$<m>.made * 1_000_000 + +$<thousands>.made; }
-        | <m=.number> \h+ 'million' \h+ <hundreds>          { make +$<m>.made * 1_000_000 + +$<hundreds>.made; }
-        | <m=.number> \h+ 'million' \h+ <tens>              { make +$<m>.made * 1_000_000 + +$<tens>.made; }
-        | <m=.number> \h+ 'million' \h+ <number>            { make +$<m>.made * 1_000_000 + +$<number>.made; }
-        | <m=.number> \h+ 'million'                         { make +$<m>.made * 1_000_000; }
+        [ <m=.hundreds> | <m=.tens> | <m=.number> ] \h+ 'million' 
+        [
+            \h+ [ <o=.thousands> | <o=.hundreds> | <o=.tens> | <o=.number> ] 
+        ]?
+        { make +$<m>.made * 1_000_000 + +($<o>.?made // 0); }
     }
 
     token thousands {
-        | [ <t=.hundreds> | <t=.tens> | <t=.number> ] \h+ 'thousand' [ \h+ [ <o=.hundreds> | <o=.tens> | <o=.number> | <?> ] ]?
-            { make +$<t>.made * 1000 + +($<o>.?made // 0) }
+        [ <t=.hundreds> | <t=.tens> | <t=.number> ] \h+ 'thousand' 
+        [
+            \h+ [ <o=.hundreds> | <o=.tens> | <o=.number> ] 
+        ]?
+        { make +$<t>.made * 1000 + +($<o>.?made // 0) }
     }
 
     token hundreds {
-        | <n=.number> \h+ 'hundred' [ \h+ [ <o=.tens> | <o=.number> | <?> ]  ]?
-                { make +$<n>.made * 100 + +($<o>.?made // 0) }
+        <n=.number> \h+ 'hundred' 
+        [
+            \h+ [ <o=.tens> | <o=.number> ]  
+        ]?
+       { make +$<n>.made * 100 + +($<o>.?made // 0) }
     }
 
     token tens {
-        | <ty-s> '-' <number>  { make +$<ty-s>.made + +$<number>.made; }
-        | <ty-s> \h+ <number>  { make +$<ty-s>.made + +$<number>.made; }
-        | <ty-s>               { make +$<ty-s>.made; }
+        <ty-s> [ [ '-' | \h+ ] <number> ]?    { make +$<ty-s>.made + +($<number>.?made // 0); }
     }
 
     token number {
