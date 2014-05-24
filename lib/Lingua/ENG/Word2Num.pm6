@@ -46,11 +46,16 @@ grammar Lingua::ENG::Word2Num::Parser {
     }
 
     token tens {
-        <ty-s> [ [ '-' | \h+ ] <number> ]?    { make +$<ty-s>.made + +($<number>.?made // 0); }
+        <ty-s> [ [ '-' | \h+ ] <digits> ]?    { make +$<ty-s>.made + +($<digits>.?made // 0); }
     }
 
     token number {
-        | $<digits>=[\d+]   { make +$<digits> }
+        | $<digits>=[\d+]   { make +$<digits> }     # maybe?
+        | <digits>          { make +$<digits>.made }
+        | <teens>           { make +$<teens>.made }
+    }
+
+    token digits {
         | 'one'             { make 1 }
         | 'two'             { make 2 }
         | 'three'           { make 3 }
@@ -60,6 +65,9 @@ grammar Lingua::ENG::Word2Num::Parser {
         | 'seven'           { make 7 }
         | 'eight'           { make 8 }
         | 'nine'            { make 9 }
+    }
+
+    token teens {
         | 'ten'             { make 10 }
         | 'eleven'          { make 11 }
         | 'twelve'          { make 12 }
