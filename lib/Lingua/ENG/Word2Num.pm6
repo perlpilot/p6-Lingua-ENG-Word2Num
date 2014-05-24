@@ -13,34 +13,34 @@ grammar Lingua::ENG::Word2Num::Parser {
         | 'zero'            { make 0 }
     }
 
-    token billions {
-        [ <b=.millions> | <b=.hundreds> | <b=.tens> | <b=.number> ] \h+ 'billion' 
+    rule billions {
+        [ <b=.millions> | <b=.hundreds> | <b=.tens> | <b=.number> ] 'billion' 
         [
-            \h+ [ <o=.millions> | <o=.thousands> | <o=.hundreds> | <o=.tens> | <o=.number> ] 
+            [ <o=.millions> | <o=.thousands> | <o=.hundreds> | <o=.tens> | <o=.number> ] 
         ]?
         { make +$<b>.made * 1_000_000_000 + +($<o>.?made // 0); }
     }
 
-    token millions {
-        [ <m=.hundreds> | <m=.tens> | <m=.number> ] \h+ 'million' 
+    rule millions {
+        [ <m=.hundreds> | <m=.tens> | <m=.number> ] 'million' 
         [
-            \h+ [ <o=.thousands> | <o=.hundreds> | <o=.tens> | <o=.number> ] 
+            [ <o=.thousands> | <o=.hundreds> | <o=.tens> | <o=.number> ] 
         ]?
         { make +$<m>.made * 1_000_000 + +($<o>.?made // 0); }
     }
 
-    token thousands {
-        [ <t=.hundreds> | <t=.tens> | <t=.number> ] \h+ 'thousand' 
+    rule thousands {
+        [ <t=.hundreds> | <t=.tens> | <t=.number> ] 'thousand' 
         [
-            \h+ [ <o=.hundreds> | <o=.tens> | <o=.number> ] 
+            [ <o=.hundreds> | <o=.tens> | <o=.number> ] 
         ]?
         { make +$<t>.made * 1000 + +($<o>.?made // 0) }
     }
 
-    token hundreds {
-        <n=.number> \h+ 'hundred' 
+    rule hundreds {
+        <n=.number> 'hundred' 
         [
-            \h+ [ <o=.tens> | <o=.number> ]  
+            [ <o=.tens> | <o=.number> ]  
         ]?
        { make +$<n>.made * 100 + +($<o>.?made // 0) }
     }
